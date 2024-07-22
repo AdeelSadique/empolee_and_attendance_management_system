@@ -1,20 +1,8 @@
-import { imageUploader } from '../middlewares/multer.js';
 import { attendanceModel } from '../models/attendance.js';
 import { userModel } from '../models/user.js';
 import { ErrorHandler } from '../utils/errorHandler.js';
-import path from 'path';
 import fs from 'fs';
 
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, 'public/attendance_images');
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + path.extname(file.originalname));
-//   },
-// });
-
-// const upload = multer({ storage: storage }).single('image');
 export const attendance = async (req, res, next) => {
   const { userID } = req.body;
   const image = req.file;
@@ -33,7 +21,7 @@ export const attendance = async (req, res, next) => {
         // save the attendance in db
         const attendanceUser = await attendanceModel.findOne({ user: user._id });
 
-        attendanceUser.attendance.push({ date: new Date(), image: image.path });
+        attendanceUser.attendance.push({ date: Date(), image: `${process.env.BACKEND_URL}/attendance_images/${image.filename}` });
         await attendanceUser.save();
         res.status(200).json({ status: true, message: 'Thank You for Verification' });
       }

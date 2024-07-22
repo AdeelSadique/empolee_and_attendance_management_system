@@ -1,5 +1,5 @@
 // import all routes here
 
-import userRoutes from './userRoutes.js';
+import adminRoutes from './adminRoutes.js';
 
-export { userRoutes };
+export { adminRoutes };
